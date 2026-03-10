@@ -1,0 +1,268 @@
+/*
+  Improved global styles
+  - Variables organized and extended
+  - Dark mode support via prefers-color-scheme and data-theme
+  - Accessible focus styles and reduced-motion support
+  - Small utility classes and responsive container
+*/
+
+:root {
+  /* Brand */
+  --primary: #2563eb; /* azul principal */
+  --primary-contrast: #ffffff; /* texto sobre primary */
+  --primary-700: #1e40af;
+
+  --secondary: #1e293b; /* color secundario/texto en superficies */
+
+  /* Surface / text */
+  --background: #f8fafc;
+  --surface: #f1f5f9;
+  --card: #ffffff;
+  --text-dark: #0f172a;
+  --text-muted: #64748b;
+
+  /* Shadows */
+  --shadow-sm: 0 4px 12px rgba(2,6,23,0.06);
+  --shadow-md: 0 10px 25px rgba(2,6,23,0.08);
+  --shadow-lg: 0 20px 40px rgba(2,6,23,0.10);
+
+  /* Spacing & motion */
+  --radius: 16px;
+  --radius-sm: 8px;
+  --transition: 0.28s;
+  --transition-fast: 0.12s;
+
+  /* Layout */
+  --container-max: 1100px;
+
+  /* Semantic tokens */
+  --accent: #38bdf8;
+  --success: #16a34a;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+}
+
+/* Dark mode fallback: users who prefer dark or app opts in with [data-theme="dark"] */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0b1220;
+    --surface: #071224;
+    --card: #0f1724;
+    --text-dark: #e6eef8;
+    --text-muted: #93a3b8;
+    --shadow-sm: 0 6px 14px rgba(0,0,0,0.6);
+    --shadow-md: 0 12px 30px rgba(0,0,0,0.65);
+    --shadow-lg: 0 24px 60px rgba(0,0,0,0.7);
+  }
+}
+
+/* Allow explicit dark mode via attribute for app-level control */
+:root[data-theme="dark"] {
+  --background: #0b1220;
+  --surface: #071224;
+  --card: #0f1724;
+  --text-dark: #e6eef8;
+  --text-muted: #93a3b8;
+  --shadow-sm: 0 6px 14px rgba(0,0,0,0.6);
+  --shadow-md: 0 12px 30px rgba(0,0,0,0.65);
+  --shadow-lg: 0 24px 60px rgba(0,0,0,0.7);
+}
+
+/* Box sizing and sensible resets */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* General */
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  background: var(--background);
+  color: var(--text-dark);
+  margin: 0;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* Headings & typography helpers */
+h1, h2, h3, h4 {
+  margin: 0 0 0.5rem 0;
+  line-height: 1.15;
+}
+
+h1 { font-size: clamp(1.5rem, 4vw, 2.6rem); }
+h2 { font-size: clamp(1.25rem, 3vw, 1.8rem); text-align: center; }
+h3 { font-size: 1.05rem; }
+
+.lead {
+  font-size: 1.05rem;
+  color: var(--text-muted);
+}
+
+/* Container with horizontal padding for small screens */
+.container {
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+
+/* Narrow container used by several sections */
+.container--narrow { max-width: 780px; margin-inline: auto; }
+
+/* Utilities */
+.visually-hidden,
+.sr-only {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Small helpers */
+.muted { color: var(--text-muted); }
+.stack-gap {
+  display: grid;
+  gap: 1rem;
+}
+
+/* Buttons: base and variants */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1rem;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  cursor: pointer;
+  border: 0;
+  transition: transform var(--transition) ease, box-shadow var(--transition) ease, background-color var(--transition) ease;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: var(--primary-contrast);
+  padding: 0.8rem 1.6rem;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--primary-700);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Active/pressed state */
+.btn-primary:active:not(:disabled) {
+  transform: translateY(-1px) scale(0.995);
+}
+
+/* Accessible focus styles */
+/* Use :focus-visible where supported to avoid focus styles on mouse click */
+.btn:focus,
+a:focus,
+button:focus {
+  outline: none;
+}
+
+:focus-visible {
+  outline: 3px solid rgba(37,99,235,0.12);
+  outline-offset: 3px;
+  border-radius: calc(var(--radius-sm) + 2px);
+}
+
+/* Global link styles */
+a {
+  color: var(--primary);
+  text-decoration: none;
+}
+
+a:hover,
+a:focus-visible { text-decoration: underline; }
+
+/* Cards */
+.card {
+  background: var(--card);
+  padding: 1.25rem;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  transition: transform var(--transition) ease, box-shadow var(--transition) ease;
+}
+
+.card--padded {
+  padding: 2rem;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Small utility spacing classes */
+.mb-0 { margin-bottom: 0 !important; }
+.mb-1 { margin-bottom: .5rem !important; }
+.mb-2 { margin-bottom: 1rem !important; }
+.mt-1 { margin-top: .5rem !important; }
+
+
+/* Reveal / animations */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  will-change: opacity, transform;
+}
+
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Respect user preference for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  * {
+    transition: none !important;
+    animation-duration: 0s !important;
+    scroll-behavior: auto;
+  }
+}
+
+/* Small responsive tweaks */
+@media (max-width: 640px) {
+  .btn-primary {
+    width: 100%;
+    padding-inline: 1rem;
+  }
+
+  .card {
+    padding: 1rem;
+  }
+}
+
+/* End of file */
