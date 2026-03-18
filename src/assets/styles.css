@@ -8,18 +8,18 @@
 
 :root {
   /* Brand */
-  --primary: #2563eb; /* azul principal */
+  --primary: #1f7a3f; /* verde principal */
   --primary-contrast: #ffffff; /* texto sobre primary */
-  --primary-700: #1e40af;
+  --primary-700: #14582a;
 
-  --secondary: #1e293b; /* color secundario/texto en superficies */
+  --secondary: #0f5132; /* color secundario/texto en superficies */
 
   /* Surface / text */
-  --background: #f8fafc;
-  --surface: #f1f5f9;
+  --background: #e9f7ec;
+  --surface: #dff5e8;
   --card: #ffffff;
-  --text-dark: #0f172a;
-  --text-muted: #64748b;
+  --text-dark: #0b3f25;
+  --text-muted: #2d6a42;
 
   /* Shadows */
   --shadow-sm: 0 4px 12px rgba(2,6,23,0.06);
@@ -36,20 +36,20 @@
   --container-max: 1100px;
 
   /* Semantic tokens */
-  --accent: #38bdf8;
+  --accent: #22c55e;
   --success: #16a34a;
-  --warning: #f59e0b;
-  --danger: #ef4444;
+  --warning: #a3e635;
+  --danger: #4ade80;
 }
 
 /* Dark mode fallback: users who prefer dark or app opts in with [data-theme="dark"] */
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0b1220;
-    --surface: #071224;
-    --card: #0f1724;
-    --text-dark: #e6eef8;
-    --text-muted: #93a3b8;
+    --background: #042e13;
+    --surface: #043b1a;
+    --card: #06503d;
+    --text-dark: #d4fde4;
+    --text-muted: #8ee3b6;
     --shadow-sm: 0 6px 14px rgba(0,0,0,0.6);
     --shadow-md: 0 12px 30px rgba(0,0,0,0.65);
     --shadow-lg: 0 24px 60px rgba(0,0,0,0.7);
@@ -58,11 +58,11 @@
 
 /* Allow explicit dark mode via attribute for app-level control */
 :root[data-theme="dark"] {
-  --background: #0b1220;
-  --surface: #071224;
-  --card: #0f1724;
-  --text-dark: #e6eef8;
-  --text-muted: #93a3b8;
+  --background: #042e13;
+  --surface: #043b1a;
+  --card: #06503d;
+  --text-dark: #d4fde4;
+  --text-muted: #8ee3b6;
   --shadow-sm: 0 6px 14px rgba(0,0,0,0.6);
   --shadow-md: 0 12px 30px rgba(0,0,0,0.65);
   --shadow-lg: 0 24px 60px rgba(0,0,0,0.7);
