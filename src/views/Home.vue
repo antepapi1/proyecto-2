@@ -1,5 +1,5 @@
 <template>
-  <main>
+  <main class="home">
     <Hero />
     <Problema />
     <PropuestaValor />
@@ -17,3 +17,20 @@ import Segmentos from '../components/sections/Segmentos.vue'
 import Suscripcion from '../components/sections/Suscripcion.vue'
 import Impacto from '../components/sections/Impacto.vue'
 </script>
+
+<style scoped>
+.home {
+  overflow-x: hidden;
+}
+
+/* Asegurar que las secciones tengan el espacio correcto */
+.home > :deep(section) {
+  scroll-margin-top: 80px;
+}
+
+@media (max-width: 768px) {
+  .home > :deep(section) {
+    scroll-margin-top: 64px;
+  }
+}
+</style>

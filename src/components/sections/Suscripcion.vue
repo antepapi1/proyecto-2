@@ -1,50 +1,148 @@
 <template>
-  <section id="suscripcion" class="section" aria-labelledby="suscripcionTitle">
-    <h2 id="suscripcionTitle">Modelo de Suscripción</h2>
-
-    <div class="plan-grid" role="list" aria-label="Modelos de suscripción">
-      <article v-for="plan in planes" :key="plan.id" role="listitem" :class="['plan-card', { 'plan-card--selected': selectedPlan === plan.id }]" @click="selectPlan(plan.id)" tabindex="0" @keydown.enter="selectPlan(plan.id)" @keydown.space.prevent="selectPlan(plan.id)">
-        <h3 class="plan-title">{{ plan.name }}</h3>
-        <p class="plan-price">{{ plan.price }}</p>
-        <p class="plan-description">{{ plan.description }}</p>
-        <ul class="plan-features">
-          <li v-for="feature in plan.features" :key="feature">{{ feature }}</li>
-        </ul>
-        <span class="plan-cta" aria-hidden="true">{{ selectedPlan === plan.id ? 'Seleccionado' : 'Elegir' }}</span>
-      </article>
-    </div>
-
-    <div class="payment-section">
-      <h3>Métodos de pago disponibles</h3>
-      <div class="payment-options">
-        <article class="payment-info" aria-label="Pago con tarjeta">
-          <strong>Tarjeta de crédito/débito</strong>
-          <p>Para pagos rápidos con seguridad. Aplican 3D Secure y cifrado.</p>
-        </article>
-        <article class="payment-info" aria-label="Pago con PayPal">
-          <strong>PayPal</strong>
-          <p>Pago a través de tu cuenta PayPal, ideal si prefieres no compartir datos bancarios.</p>
-        </article>
+  <section id="suscripcion" class="section suscripcion">
+    <div class="container">
+      <div class="suscripcion__header">
+        <span class="suscripcion__badge">Planes y precios</span>
+        <h2 class="suscripcion__title">Elige el plan perfecto para tu hogar</h2>
+        <p class="suscripcion__subtitle">
+          Todos nuestros planes incluyen productos biodegradables, personal certificado y seguro incluido.
+        </p>
       </div>
-      <p class="payment-note">Solo informativo: estos son los métodos que aceptamos.</p>
-    </div>
 
-    <div class="sus-card">
-      <form @submit.prevent="suscribirse" class="sus-form" aria-describedby="sus-note">
-        <label class="field">
-          <span class="label">Nombre completo</span>
-          <input aria-label="Nombre completo" type="text" v-model="nombre" placeholder="Nombre completo" required />
-        </label>
+      <div class="suscripcion__toggle">
+        <button 
+          :class="['suscripcion__toggle-btn', { 'suscripcion__toggle-btn--active': billing === 'monthly' }]"
+          @click="billing = 'monthly'"
+        >
+          Mensual
+        </button>
+        <button 
+          :class="['suscripcion__toggle-btn', { 'suscripcion__toggle-btn--active': billing === 'annual' }]"
+          @click="billing = 'annual'"
+        >
+          Anual
+          <span class="suscripcion__toggle-badge">Ahorra 20%</span>
+        </button>
+      </div>
 
-        <label class="field">
-          <span class="label">Correo electrónico</span>
-          <input aria-label="Correo electrónico" type="email" v-model="correo" placeholder="Correo electrónico" required />
-        </label>
+      <div class="suscripcion__grid">
+        <div 
+          v-for="plan in planes" 
+          :key="plan.id" 
+          :class="['suscripcion__card', { 'suscripcion__card--popular': plan.popular }]"
+        >
+          <div v-if="plan.popular" class="suscripcion__card-badge">Más popular</div>
+          
+          <div class="suscripcion__card-header">
+            <h3 class="suscripcion__card-name">{{ plan.name }}</h3>
+            <div class="suscripcion__card-price">
+              <span class="suscripcion__card-amount">{{ plan.prices[billing] }}</span>
+              <span class="suscripcion__card-period">/{{ billing === 'monthly' ? 'mes' : 'año' }}</span>
+            </div>
+            <p class="suscripcion__card-description">{{ plan.description }}</p>
+          </div>
 
-        <button class="btn btn-primary" type="submit">Suscribirme</button>
-      </form>
+          <ul class="suscripcion__card-features">
+            <li v-for="feature in plan.features" :key="feature" class="suscripcion__feature">
+              <span class="suscripcion__feature-icon">✓</span>
+              {{ feature }}
+            </li>
+          </ul>
 
-      <p id="sus-note" v-if="mensaje" class="mensaje" role="status" aria-live="polite">{{ mensaje }}</p>
+          <div class="suscripcion__card-footer">
+            <button 
+              class="btn suscripcion__card-btn"
+              :class="{ 'btn-primary': !plan.popular, 'suscripcion__card-btn--popular': plan.popular }"
+              @click="selectedPlan = plan.id"
+            >
+              {{ selectedPlan === plan.id ? 'Seleccionado' : 'Elegir plan' }}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="suscripcion__form-container">
+        <h3 class="suscripcion__form-title">Comienza tu suscripción</h3>
+        
+        <form @submit.prevent="handleSubmit" class="suscripcion__form">
+          <div class="suscripcion__form-grid">
+            <div class="suscripcion__form-field">
+              <label for="nombre">Nombre completo</label>
+              <input 
+                id="nombre"
+                v-model="form.nombre"
+                type="text"
+                required
+                placeholder="Ingresa tu nombre"
+              />
+            </div>
+
+            <div class="suscripcion__form-field">
+              <label for="email">Correo electrónico</label>
+              <input 
+                id="email"
+                v-model="form.email"
+                type="email"
+                required
+                placeholder="tucorreo@ejemplo.com"
+              />
+            </div>
+
+            <div class="suscripcion__form-field">
+              <label for="telefono">Teléfono</label>
+              <input 
+                id="telefono"
+                v-model="form.telefono"
+                type="tel"
+                required
+                placeholder="(+504) 9999-9999"
+              />
+            </div>
+
+            <div class="suscripcion__form-field">
+              <label for="direccion">Dirección</label>
+              <input 
+                id="direccion"
+                v-model="form.direccion"
+                type="text"
+                required
+                placeholder="Ciudad, colonia"
+              />
+            </div>
+          </div>
+
+          <div class="suscripcion__payment">
+            <h4 class="suscripcion__payment-title">Métodos de pago aceptados</h4>
+            <div class="suscripcion__payment-methods">
+              <div v-for="method in paymentMethods" :key="method.name" class="suscripcion__payment-method">
+                <span class="suscripcion__payment-icon">{{ method.icon }}</span>
+                <span>{{ method.name }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="suscripcion__terms">
+            <label class="suscripcion__checkbox">
+              <input type="checkbox" v-model="form.acceptTerms" required>
+              <span>Acepto los <a href="#">términos y condiciones</a> y la <a href="#">política de privacidad</a></span>
+            </label>
+          </div>
+
+          <button type="submit" class="btn btn-primary suscripcion__submit">
+            Completar suscripción
+          </button>
+
+          <p v-if="mensaje" class="suscripcion__message">{{ mensaje }}</p>
+        </form>
+      </div>
+
+      <div class="suscripcion__guarantee">
+        <div class="suscripcion__guarantee-icon">🛡️</div>
+        <div class="suscripcion__guarantee-content">
+          <h4>Garantía de satisfacción</h4>
+          <p>Si no estás satisfecho con el primer servicio, te devolvemos tu dinero sin preguntas.</p>
+        </div>
+      </div>
     </div>
   </section>
 </template>
@@ -52,314 +150,487 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 
-const STORAGE_KEY = 'limpiovital-subscription'
-const nombre = ref('')
-const correo = ref('')
-const mensaje = ref('')
+const billing = ref('monthly')
 const selectedPlan = ref('basico')
+const mensaje = ref('')
+
+const form = ref({
+  nombre: '',
+  email: '',
+  telefono: '',
+  direccion: '',
+  acceptTerms: false
+})
 
 const planes = [
   {
     id: 'basico',
-    name: 'Plan Básico – Hogar Esencial',
-    price: 'Casa pequeña: L 1,800 – L 2,800',
-    description: 'Ideal para mantenimiento regular del hogar.',
+    name: 'Básico',
+    description: 'Mantenimiento regular para hogares pequeños',
+    popular: false,
+    prices: {
+      monthly: 'L 1,800',
+      annual: 'L 18,500'
+    },
     features: [
-      'Barrer y trapear',
+      '2 horas por visita',
       'Limpieza de superficies',
-      'Limpieza básica de baño',
-      'Limpieza básica de cocina',
-      'Frecuencia sugerida: 1 vez por semana o quincenal'
+      'Barrer y trapear',
+      'Baño y cocina básico',
+      'Frecuencia semanal',
+      'Productos ecológicos'
     ]
   },
   {
     id: 'plus',
-    name: 'Plan Plus – Hogar Plus',
-    price: 'Casa pequeña: L 3,500 – L 5,000',
-    description: 'Incluye todo el plan básico + limpieza más detallada.',
+    name: 'Plus',
+    description: 'Limpieza profunda para hogares medianos',
+    popular: true,
+    prices: {
+      monthly: 'L 3,500',
+      annual: 'L 35,000'
+    },
     features: [
+      '3 horas por visita',
+      'Todo el plan Básico',
       'Limpieza de ventanas',
-      'Limpieza de azulejos',
-      'Eliminación de grasa en cocina',
-      'Desinfección más profunda',
-      'Limpieza más detallada de baños',
-      'Frecuencia sugerida: 1–2 veces por semana'
+      'Desinfección profunda',
+      'Electrodomésticos',
+      'Prioridad en agenda'
     ]
   },
   {
     id: 'premium',
-    name: 'Plan Premium – Hogar Total',
-    price: 'Casa pequeña: L 6,000 – L 8,500',
-    description: 'Incluye todo lo anterior + servicio completo tipo hotel.',
+    name: 'Premium',
+    description: 'Servicio completo tipo hotel',
+    popular: false,
+    prices: {
+      monthly: 'L 6,000',
+      annual: 'L 60,000'
+    },
     features: [
-      'Limpieza profunda completa programada',
-      'Organización de espacios (cocina, sala, habitaciones)',
-      'Limpieza de interiores de electrodomésticos',
-      'Prioridad en horarios',
-      'Productos premium o ecológicos incluidos',
-      'Atención personalizada',
-      'Frecuencia sugerida: 2–3 veces por semana'
-    ]
-  },
-  {
-    id: 'empresarial',
-    name: 'Plan Empresarial (Extra)',
-    price: 'Oficina pequeña: L 2,500 – L 4,000 / mes',
-    description: 'Limpieza de oficinas y mantenimiento para locales comerciales.',
-    features: [
-      'Limpieza de oficinas',
-      'Mantenimiento diario o semanal',
-      'Baños, escritorios, áreas comunes',
-      'Opcional: desinfección',
-      'Plan personalizado: según contrato'
+      '4 horas por visita',
+      'Todo el plan Plus',
+      'Organización de espacios',
+      'Limpieza de interiores',
+      'Productos premium',
+      'Mismo equipo asignado'
     ]
   }
 ]
 
-function selectPlan(planId) {
-  selectedPlan.value = planId
-}
+const paymentMethods = [
+  { name: 'Tarjeta crédito/débito', icon: '💳' },
+  { name: 'PayPal', icon: '🅿️' },
+  { name: 'Transferencia bancaria', icon: '🏦' },
+  { name: 'Efectivo', icon: '💵' }
+]
 
-function saveToStorage(suscripcion) {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(suscripcion))
-  } catch (error) {
-    console.warn('No se pudo guardar la suscripción en localStorage', error)
+function handleSubmit() {
+  const planSeleccionado = planes.find(p => p.id === selectedPlan.value)
+  
+  mensaje.value = `¡Gracias ${form.value.nombre}! Hemos recibido tu solicitud para el plan ${planSeleccionado.name}. Te contactaremos en las próximas 24 horas.`
+  
+  // Reset form
+  form.value = {
+    nombre: '',
+    email: '',
+    telefono: '',
+    direccion: '',
+    acceptTerms: false
   }
-}
-
-function loadFromStorage() {
-  try {
-    const item = localStorage.getItem(STORAGE_KEY)
-    if (!item) return
-
-    const data = JSON.parse(item)
-    if (data?.nombre) nombre.value = data.nombre
-    if (data?.correo) correo.value = data.correo
-    if (data?.planId) selectedPlan.value = data.planId
-    mensaje.value = `Cargado registro previo: ${data.nombre || ''} (${data.correo || ''}) - plan ${data.planName || ''}`
-  } catch (error) {
-    console.warn('No se pudo cargar la suscripción de localStorage', error)
-  }
-}
-
-function suscribirse() {
-  const plan = planes.find(p => p.id === selectedPlan.value)
-  const suscripcion = {
-    nombre: nombre.value,
-    correo: correo.value,
-    planId: selectedPlan.value,
-    planName: plan.name,
-    planPrice: plan.price,
-    fecha: new Date().toISOString()
-  }
-
-  saveToStorage(suscripcion)
-
-  mensaje.value = `Gracias ${suscripcion.nombre}, seleccionaste el plan ${suscripcion.planName} (${suscripcion.planPrice}) y tu suscripción fue registrada correctamente.`
-
-  nombre.value = ''
-  correo.value = ''
+  
+  // Scroll to message
+  setTimeout(() => {
+    document.querySelector('.suscripcion__message')?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  }, 100)
 }
 
 onMounted(() => {
-  loadFromStorage()
+  // Cargar datos guardados si existen
+  const saved = localStorage.getItem('limpiovital-subscription')
+  if (saved) {
+    try {
+      const data = JSON.parse(saved)
+      if (data.nombre) form.value.nombre = data.nombre
+      if (data.email) form.value.email = data.email
+    } catch (e) {
+      console.error('Error loading saved data')
+    }
+  }
 })
 </script>
 
 <style scoped>
-.sus-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem; /* increased gap for better spacing */
-  max-width: 440px;
+.suscripcion {
+  background: var(--surface-alt);
+}
+
+.suscripcion__header {
+  text-align: center;
+  margin-bottom: var(--space-xl);
+}
+
+.suscripcion__badge {
+  display: inline-block;
+  padding: var(--space-xs) var(--space-sm);
+  background: var(--primary-soft);
+  color: var(--primary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-sm);
+}
+
+.suscripcion__title {
+  margin-bottom: var(--space-sm);
+}
+
+.suscripcion__subtitle {
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+  max-width: 600px;
   margin: 0 auto;
 }
 
-.sus-form input {
-  padding: 12px;
-  border-radius: 8px;
-  border: 1px solid rgba(15,23,42,0.08);
-  background: var(--card);
+.suscripcion__toggle {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-xl);
+  background: var(--surface);
+  padding: var(--space-xs);
+  border-radius: var(--radius-lg);
+  max-width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px solid var(--border-light);
 }
 
-.sus-card {
-  background: var(--card);
-  padding: 1.75rem; /* more breathing room */
-  border-radius: 12px;
-  box-shadow: var(--shadow-sm);
-  max-width: 560px;
-  margin: 1rem auto 2rem; /* space from heading above and next section below */
+.suscripcion__toggle-btn {
+  flex: 1;
+  padding: var(--space-sm) var(--space-md);
+  border: none;
+  background: transparent;
+  border-radius: var(--radius-md);
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  position: relative;
 }
 
-.field {
+.suscripcion__toggle-btn--active {
+  background: var(--primary);
+  color: white;
+}
+
+.suscripcion__toggle-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: var(--accent-2);
+  color: var(--text-primary);
+  font-size: 0.7rem;
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+}
+
+.suscripcion__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-md);
+  margin-bottom: var(--space-xl);
+}
+
+.suscripcion__card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  position: relative;
+  transition: all var(--transition-base);
   display: flex;
   flex-direction: column;
-  gap: 0.5rem; /* slightly larger gap between label and input */
 }
 
-.label {
-  font-size: 0.95rem;
-  color: var(--text-dark);
-  display: block;
+.suscripcion__card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
 }
 
-.sus-form input {
-  width: 100%;
+.suscripcion__card--popular {
+  border-color: var(--primary);
+  box-shadow: var(--shadow-md);
+  transform: scale(1.05);
+  z-index: 2;
 }
 
-.sus-form input:focus-visible {
-  outline: 3px solid rgba(37,99,235,0.12);
-  outline-offset: 2px;
-}
-
-.mensaje {
-  margin-top: 1.25rem;
+.suscripcion__card-badge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--primary);
+  color: white;
+  padding: 4px var(--space-sm);
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
   font-weight: 600;
-  color: var(--primary);
+  white-space: nowrap;
+}
+
+.suscripcion__card-header {
   text-align: center;
+  margin-bottom: var(--space-md);
+  padding-bottom: var(--space-md);
+  border-bottom: 1px solid var(--border-light);
 }
 
-.plan-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1rem;
-  margin: 1rem 0 1.8rem;
-}
-
-.plan-card {
-  border: 2px solid rgba(15,23,42,0.08);
-  border-radius: 12px;
-  padding: 1rem;
-  background: var(--surface);
-  cursor: pointer;
-  transition: transform var(--transition) ease, border-color var(--transition) ease, box-shadow var(--transition) ease;
-}
-
-.plan-card:hover,
-.plan-card:focus-visible {
-  transform: translateY(-2px);
-  border-color: var(--primary);
-  box-shadow: var(--shadow-sm);
-}
-
-.plan-card--selected {
-  border-color: var(--primary);
-  background: rgba(34,197,94,0.1);
-  box-shadow: 0 10px 24px rgba(22,163,74,0.2);
-}
-
-.plan-title {
-  margin: 0 0 0.35rem;
-  font-size: 1.1rem;
-  color: var(--text-dark);
-}
-
-.plan-price {
-  margin: 0 0 .45rem;
+.suscripcion__card-name {
   font-size: 1.3rem;
+  margin-bottom: var(--space-sm);
+  color: var(--text-primary);
+}
+
+.suscripcion__card-price {
+  margin-bottom: var(--space-sm);
+}
+
+.suscripcion__card-amount {
+  font-size: 2.2rem;
   font-weight: 700;
   color: var(--primary);
+  line-height: 1.2;
 }
 
-.plan-description {
-  margin-bottom: 0.7rem;
-  color: var(--text-muted);
+.suscripcion__card-period {
+  font-size: 0.95rem;
+  color: var(--text-tertiary);
 }
 
-.plan-features {
-  padding-left: 1.2rem;
-  margin: 0 0 .8rem;
-}
-
-.plan-features li {
-  margin-bottom: 0.3rem;
-}
-
-.plan-cta {
-  display: inline-block;
-  font-size: 0.88rem;
-  color: var(--primary);
-  font-weight: 700;
-}
-
-.plan-card--selected .plan-cta {
-  color: var(--success);
-}
-
-.payment-section {
-  background: var(--surface);
-  border: 1px solid rgba(15,23,42,0.1);
-  border-radius: 12px;
-  padding: 1rem;
-  margin: 1.25rem 0;
-}
-
-.payment-section h3 {
-  margin: 0 0 0.75rem;
-  font-size: 1.05rem;
-  color: var(--text-dark);
-}
-
-.payment-options {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-.payment-option {
-  background: var(--card);
-  border: 1px solid rgba(15,23,42,0.12);
-  border-radius: 8px;
-  padding: 0.75rem;
-  display: block;
-  transition: transform var(--transition) ease, box-shadow var(--transition) ease;
-}
-
-.payment-info {
-  background: var(--card);
-  border: 1px solid rgba(15,23,42,0.12);
-  border-radius: 10px;
-  padding: 0.75rem;
-  width: 100%;
-}
-
-.payment-info strong {
-  display: block;
-  font-size: 1rem;
-  margin-bottom: 0.35rem;
-}
-
-.payment-info p {
+.suscripcion__card-description {
+  font-size: 0.95rem;
+  color: var(--text-tertiary);
   margin: 0;
-  color: var(--text-muted);
 }
 
-.payment-option:hover,
-.payment-info:hover {
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-sm);
+.suscripcion__card-features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 var(--space-md) 0;
+  flex-grow: 1;
 }
 
+.suscripcion__feature {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-xs) 0;
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-light);
+}
 
-.payment-note {
-  margin-top: 0.75rem;
-  color: var(--text-muted);
+.suscripcion__feature:last-child {
+  border-bottom: none;
+}
+
+.suscripcion__feature-icon {
+  color: var(--primary);
+  font-weight: bold;
+}
+
+.suscripcion__card-btn {
+  width: 100%;
+  padding: var(--space-md);
+  background: transparent;
+  border: 1px solid var(--border-medium);
+  color: var(--text-primary);
+}
+
+.suscripcion__card-btn--popular {
+  background: var(--primary);
+  color: white;
+  border: none;
+}
+
+.suscripcion__card-btn:hover {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+.suscripcion__form-container {
+  background: var(--card-bg);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  margin-bottom: var(--space-xl);
+}
+
+.suscripcion__form-title {
+  font-size: 1.8rem;
+  text-align: center;
+  margin-bottom: var(--space-lg);
+  color: var(--text-primary);
+}
+
+.suscripcion__form {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.suscripcion__form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+}
+
+.suscripcion__form-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.suscripcion__form-field label {
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.suscripcion__payment {
+  background: var(--surface-alt);
+  padding: var(--space-lg);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-lg);
+}
+
+.suscripcion__payment-title {
+  font-size: 1.1rem;
+  margin-bottom: var(--space-md);
+  color: var(--text-primary);
+}
+
+.suscripcion__payment-methods {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-sm);
+}
+
+.suscripcion__payment-method {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-xs) var(--space-sm);
+  background: var(--card-bg);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.suscripcion__payment-icon {
+  font-size: 1.2rem;
+}
+
+.suscripcion__terms {
+  margin-bottom: var(--space-lg);
+}
+
+.suscripcion__checkbox {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  cursor: pointer;
+  color: var(--text-secondary);
+}
+
+.suscripcion__checkbox a {
+  color: var(--primary);
+  text-decoration: underline;
+}
+
+.suscripcion__submit {
+  width: 100%;
+  padding: var(--space-md);
+  font-size: 1.1rem;
+}
+
+.suscripcion__message {
+  margin-top: var(--space-md);
+  padding: var(--space-md);
+  background: var(--primary-soft);
+  color: var(--primary);
+  border-radius: var(--radius-md);
+  text-align: center;
+  font-weight: 500;
+}
+
+.suscripcion__guarantee {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  background: var(--surface);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.suscripcion__guarantee-icon {
+  font-size: 3rem;
+  line-height: 1;
+}
+
+.suscripcion__guarantee-content h4 {
+  font-size: 1.2rem;
+  margin-bottom: var(--space-xs);
+  color: var(--text-primary);
+}
+
+.suscripcion__guarantee-content p {
+  margin: 0;
+  color: var(--text-tertiary);
   font-size: 0.95rem;
 }
 
-/* Ensure heading isn't too close to the card */
-h2 {
-  margin-bottom: 0.75rem;
+@media (max-width: 1024px) {
+  .suscripcion__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .suscripcion__card--popular {
+    transform: scale(1);
+    order: -1;
+  }
+  
+  .suscripcion__payment-methods {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
-/* Make the submit button slightly separated and responsive */
-.sus-form .btn {
-  align-self: stretch;
-  max-width: 260px;
-}
-
-@media (max-width: 640px) {
-  .sus-form .btn { width: 100%; }
+@media (max-width: 768px) {
+  .suscripcion__grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .suscripcion__form-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .suscripcion__payment-methods {
+    grid-template-columns: 1fr;
+  }
+  
+  .suscripcion__guarantee {
+    flex-direction: column;
+    text-align: center;
+  }
 }
 </style>

@@ -1,246 +1,312 @@
-/*
-  Improved global styles
-  - Variables organized and extended
-  - Dark mode support via prefers-color-scheme and data-theme
-  - Accessible focus styles and reduced-motion support
-  - Small utility classes and responsive container
-*/
+/* styles.css - Versión profesional con paleta equilibrada */
 
 :root {
-  /* Brand */
-  --primary: #1f7a3f; /* verde principal */
-  --primary-contrast: #ffffff; /* texto sobre primary */
-  --primary-700: #14582a;
-
-  --secondary: #0f5132; /* color secundario/texto en superficies */
-
-  /* Surface / text */
-  --background: #e9f7ec;
-  --surface: #dff5e8;
-  --card: #ffffff;
-  --text-dark: #0b3f25;
-  --text-muted: #2d6a42;
-
-  /* Shadows */
-  --shadow-sm: 0 4px 12px rgba(2,6,23,0.06);
-  --shadow-md: 0 10px 25px rgba(2,6,23,0.08);
-  --shadow-lg: 0 20px 40px rgba(2,6,23,0.10);
-
-  /* Spacing & motion */
-  --radius: 16px;
-  --radius-sm: 8px;
-  --transition: 0.28s;
-  --transition-fast: 0.12s;
-
-  /* Layout */
-  --container-max: 1100px;
-
-  /* Semantic tokens */
-  --accent: #22c55e;
-  --success: #16a34a;
-  --warning: #a3e635;
-  --danger: #4ade80;
+  /* Paleta refinada - Verde como acento, no como dominante */
+  --primary: #0B4F3A;        /* Verde profundo para acentos */
+  --primary-light: #1A7B5A;   /* Verde suave para hover */
+  --primary-soft: #E8F1EE;    /* Fondo muy sutil para badges */
+  
+  /* Neutros elegantes - Base de la interfaz */
+  --background: #F5F7FA;      /* Fondo general muy suave, casi blanco */
+  --surface: #FFFFFF;         /* Superficies principales */
+  --surface-alt: #F0F2F5;     /* Superficies alternas ligeramente distintas */
+  --card-bg: #FFFFFF;         /* Fondo de tarjetas */
+  
+  /* Jerarquía de texto en grises profesionales */
+  --text-primary: #1A1E24;    /* Casi negro para títulos */
+  --text-secondary: #4A5568;  /* Gris oscuro para texto normal */
+  --text-tertiary: #6B7A8F;   /* Gris medio para texto secundario */
+  --text-inverse: #FFFFFF;    /* Blanco sobre fondos oscuros */
+  
+  /* Acentos sutiles - solo para detalles */
+  --accent-1: #0B4F3A;        /* Verde principal (mismo que primary) */
+  --accent-2: #B48C5C;        /* Dorado suave para calidez */
+  --accent-3: #5B6F82;        /* Gris azulado para variación */
+  
+  /* Bordes ultra sutiles */
+  --border-light: rgba(0, 0, 0, 0.06);
+  --border-medium: rgba(0, 0, 0, 0.1);
+  
+  /* Sombras muy suaves - casi imperceptibles */
+  --shadow-xs: 0 2px 8px rgba(0, 0, 0, 0.02);
+  --shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.03);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 16px 32px rgba(0, 0, 0, 0.05);
+  
+  /* Espaciado sistemático */
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2.5rem;
+  --space-xl: 4rem;
+  
+  /* Tipografía */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', monospace;
+  
+  /* Radios suaves */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  
+  /* Animaciones */
+  --transition-fast: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Dark mode fallback: users who prefer dark or app opts in with [data-theme="dark"] */
+/* Modo oscuro opcional - más neutro */
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #042e13;
-    --surface: #043b1a;
-    --card: #06503d;
-    --text-dark: #d4fde4;
-    --text-muted: #8ee3b6;
-    --shadow-sm: 0 6px 14px rgba(0,0,0,0.6);
-    --shadow-md: 0 12px 30px rgba(0,0,0,0.65);
-    --shadow-lg: 0 24px 60px rgba(0,0,0,0.7);
+    --background: #121416;    /* Gris muy oscuro */
+    --surface: #1E2024;       /* Superficie ligeramente más clara */
+    --surface-alt: #2A2D33;   /* Alterna */
+    --card-bg: #1E2024;       /* Tarjetas */
+    --text-primary: #E5E7EB;  /* Blanco suave */
+    --text-secondary: #9CA3AF; /* Gris claro */
+    --text-tertiary: #6B7280; /* Gris medio */
+    --border-light: rgba(255, 255, 255, 0.06);
+    --border-medium: rgba(255, 255, 255, 0.1);
+    --shadow-xs: 0 2px 8px rgba(0, 0, 0, 0.4);
+    --shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.5);
+    --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.6);
+    --shadow-lg: 0 16px 32px rgba(0, 0, 0, 0.7);
   }
 }
 
-/* Allow explicit dark mode via attribute for app-level control */
-:root[data-theme="dark"] {
-  --background: #042e13;
-  --surface: #043b1a;
-  --card: #06503d;
-  --text-dark: #d4fde4;
-  --text-muted: #8ee3b6;
-  --shadow-sm: 0 6px 14px rgba(0,0,0,0.6);
-  --shadow-md: 0 12px 30px rgba(0,0,0,0.65);
-  --shadow-lg: 0 24px 60px rgba(0,0,0,0.7);
-}
-
-/* Box sizing and sensible resets */
-*,
-*::before,
-*::after {
+/* Reset y estilos base */
+* {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
 }
 
-/* General */
 html {
+  font-size: 16px;
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 body {
-  font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
-  background: var(--background);
-  color: var(--text-dark);
-  margin: 0;
+  font-family: var(--font-sans);
+  background-color: var(--background);
+  color: var(--text-secondary);
   line-height: 1.6;
-  min-height: 100vh;
+  font-weight: 400;
 }
 
-/* Headings & typography helpers */
-h1, h2, h3, h4 {
-  margin: 0 0 0.5rem 0;
-  line-height: 1.15;
+/* Tipografía - verde solo para acentos */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
 }
 
-h1 { font-size: clamp(1.5rem, 4vw, 2.6rem); }
-h2 { font-size: clamp(1.25rem, 3vw, 1.8rem); text-align: center; }
-h3 { font-size: 1.05rem; }
+h1 {
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+
+h2 {
+  font-size: clamp(2rem, 4vw, 2.5rem);
+  font-weight: 500;
+  margin-bottom: var(--space-lg);
+  text-align: center;
+  color: var(--text-primary);
+}
+
+h2::after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 3px;
+  background: var(--primary);
+  margin: var(--space-sm) auto 0;
+  border-radius: var(--radius-sm);
+  opacity: 0.8;
+}
+
+h3 {
+  font-size: 1.35rem;
+  font-weight: 500;
+  margin-bottom: var(--space-xs);
+  color: var(--text-primary);
+}
+
+p {
+  color: var(--text-secondary);
+  margin-bottom: var(--space-md);
+}
 
 .lead {
-  font-size: 1.05rem;
-  color: var(--text-muted);
+  font-size: 1.2rem;
+  color: var(--text-tertiary);
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-/* Container with horizontal padding for small screens */
+/* Layout */
 .container {
-  max-width: var(--container-max);
-  margin-inline: auto;
-  padding-inline: 1rem;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 var(--space-md);
+}
+
+.container--narrow {
+  max-width: 900px;
 }
 
 .section {
-  margin-block: 3rem;
-  padding-block: 1.4rem;
+  padding: var(--space-xl) 0;
 }
 
-/* Narrow container used by several sections */
-.container--narrow { max-width: 780px; margin-inline: auto; }
-
-/* Utilities */
-.visually-hidden,
-.sr-only {
-  position: absolute !important;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-  white-space: nowrap;
-  border: 0;
+/* Cards y superficies - muy sutiles */
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  transition: all var(--transition-base);
+  box-shadow: var(--shadow-xs);
 }
 
-.flex-center {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--border-medium);
 }
 
-/* Small helpers */
-.muted { color: var(--text-muted); }
-.stack-gap {
+/* Grid utilitario */
+.grid {
   display: grid;
-  gap: 1rem;
+  gap: var(--space-md);
 }
 
-/* Buttons: base and variants */
+.grid-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.grid-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+@media (max-width: 1024px) {
+  .grid-4 { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 768px) {
+  .grid-3, .grid-2 { grid-template-columns: 1fr; }
+}
+
+/* Botones refinados - verde solo en primary */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  padding: 0.6rem 1rem;
-  border-radius: var(--radius-sm);
-  font-weight: 600;
+  gap: var(--space-xs);
+  padding: var(--space-sm) var(--space-lg);
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1;
+  border: none;
+  border-radius: var(--radius-md);
   cursor: pointer;
-  border: 0;
-  transition: transform var(--transition) ease, box-shadow var(--transition) ease, background-color var(--transition) ease;
+  transition: all var(--transition-fast);
+  text-decoration: none;
+  background: var(--surface-alt);
+  color: var(--text-primary);
+  border: 1px solid var(--border-light);
 }
 
-.btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  transform: none;
+.btn:hover {
+  background: var(--surface);
+  border-color: var(--border-medium);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
 }
 
 .btn-primary {
   background: var(--primary);
-  color: var(--primary-contrast);
-  padding: 0.8rem 1.6rem;
-  border-radius: var(--radius);
+  color: var(--text-inverse);
+  border: none;
+}
+
+.btn-primary:hover {
+  background: var(--primary-light);
+  transform: translateY(-2px);
   box-shadow: var(--shadow-md);
 }
 
-.btn-primary:hover:not(:disabled) {
-  background: var(--primary-700);
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-lg);
+.btn-primary:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
 }
 
-/* Active/pressed state */
-.btn-primary:active:not(:disabled) {
-  transform: translateY(-1px) scale(0.995);
-}
-
-/* Accessible focus styles */
-/* Use :focus-visible where supported to avoid focus styles on mouse click */
-.btn:focus,
-a:focus,
-button:focus {
-  outline: none;
-}
-
-:focus-visible {
-  outline: 3px solid rgba(37,99,235,0.12);
-  outline-offset: 3px;
-  border-radius: calc(var(--radius-sm) + 2px);
-}
-
-/* Global link styles */
+/* Links - verde solo para links */
 a {
   color: var(--primary);
   text-decoration: none;
+  transition: color var(--transition-fast);
 }
 
-a:hover,
-a:focus-visible { text-decoration: underline; }
-
-/* Cards */
-.card {
-  background: var(--card);
-  padding: 1.25rem;
-  border-radius: var(--radius);
-  box-shadow: var(--shadow-md);
-  transition: transform var(--transition) ease, box-shadow var(--transition) ease;
+a:hover {
+  color: var(--primary-light);
 }
 
-.card--padded {
-  padding: 2rem;
+/* Formularios - muy minimalistas */
+input, textarea, select {
+  width: 100%;
+  padding: var(--space-sm);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  color: var(--text-primary);
+  transition: all var(--transition-fast);
 }
 
-.card:hover {
-  transform: translateY(-6px);
-  box-shadow: var(--shadow-lg);
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(11, 79, 58, 0.08);
 }
 
-/* Small utility spacing classes */
-.mb-0 { margin-bottom: 0 !important; }
-.mb-1 { margin-bottom: .5rem !important; }
-.mb-2 { margin-bottom: 1rem !important; }
-.mt-1 { margin-top: .5rem !important; }
+label {
+  display: block;
+  margin-bottom: var(--space-xs);
+  color: var(--text-tertiary);
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
 
+/* Badges - verde muy suave */
+.badge {
+  display: inline-block;
+  padding: var(--space-xs) var(--space-sm);
+  background: var(--primary-soft);
+  color: var(--primary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: var(--radius-md);
+}
 
-/* Reveal / animations */
+/* Animaciones */
 .reveal {
   opacity: 0;
   transform: translateY(30px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
-  will-change: opacity, transform;
+  transition: opacity var(--transition-slow), transform var(--transition-slow);
 }
 
 .reveal.active {
@@ -248,26 +314,39 @@ a:focus-visible { text-decoration: underline; }
   transform: translateY(0);
 }
 
-/* Respect user preference for reduced motion */
+/* Utilitarios */
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+
+.mt-1 { margin-top: var(--space-xs); }
+.mt-2 { margin-top: var(--space-sm); }
+.mt-3 { margin-top: var(--space-md); }
+.mt-4 { margin-top: var(--space-lg); }
+.mt-5 { margin-top: var(--space-xl); }
+
+.mb-1 { margin-bottom: var(--space-xs); }
+.mb-2 { margin-bottom: var(--space-sm); }
+.mb-3 { margin-bottom: var(--space-md); }
+.mb-4 { margin-bottom: var(--space-lg); }
+.mb-5 { margin-bottom: var(--space-xl); }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .section {
+    padding: var(--space-lg) 0;
+  }
+  
+  h2 {
+    margin-bottom: var(--space-md);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .reveal,
   * {
-    transition: none !important;
-    animation-duration: 0s !important;
-    scroll-behavior: auto;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
-
-/* Small responsive tweaks */
-@media (max-width: 640px) {
-  .btn-primary {
-    width: 100%;
-    padding-inline: 1rem;
-  }
-
-  .card {
-    padding: 1rem;
-  }
-}
-
-/* End of file */

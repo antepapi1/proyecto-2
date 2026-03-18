@@ -1,32 +1,55 @@
 <template>
-  <footer class="footer" role="contentinfo" aria-label="Pie de página">
-    <div class="container footer__inner">
-      <div class="footer__brand">
-        <h3 class="footer__title">LimpioVital</h3>
-        <p class="footer__tag">Proyecto Universitario - CEUTEC</p>
-      </div>
-
-      <nav class="footer__links" aria-label="Enlaces legales">
-        <a href="#" class="footer__link">Aviso de privacidad</a>
-        <a href="#" class="footer__link">Términos</a>
-        <a href="#" class="footer__link">Contacto</a>
-      </nav>
-
-      <div class="footer__meta">
-        <div class="footer__social" aria-hidden="false" aria-label="Redes sociales">
-          <!-- Small accessible SVG icons -->
-          <a href="#" class="social" aria-label="Twitter">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 5.92c-.66.3-1.36.5-2.1.6.76-.46 1.35-1.2 1.63-2.08-.71.42-1.5.72-2.34.89A4.05 4.05 0 0 0 12 9.9c0 .32.03.64.1.94-3.36-.17-6.34-1.78-8.33-4.22-.35.6-.55 1.3-.55 2.05 0 1.4.71 2.64 1.79 3.37-.66-.02-1.28-.2-1.82-.5v.05c0 1.97 1.4 3.62 3.26 3.99-.34.09-.7.14-1.07.14-.26 0-.52-.02-.77-.07.52 1.6 2.03 2.77 3.82 2.8A8.14 8.14 0 0 1 2 19.54a11.5 11.5 0 0 0 6.29 1.84c7.55 0 11.68-6.26 11.68-11.68v-.53c.8-.6 1.5-1.36 2.05-2.22-.72.32-1.5.54-2.3.64z"/></svg>
-          </a>
-          <a href="#" class="social" aria-label="Instagram">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm5 6.2A3.8 3.8 0 1 0 15.8 12 3.8 3.8 0 0 0 12 8.2zm4.7-3.3a1.1 1.1 0 1 0 1.1 1.1 1.1 1.1 0 0 0-1.1-1.1z"/></svg>
-          </a>
-          <a href="#" class="social" aria-label="GitHub">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5a12 12 0 0 0-3.8 23.4c.6.1.8-.2.8-.6v-2.2c-3.3.7-4-1.6-4-1.6-.6-1.5-1.4-1.9-1.4-1.9-1.1-.7.1-.7.1-.7 1.2.1 1.9 1.3 1.9 1.3 1 .1 1.6.7 2 1.1.2-.8.5-1.4.9-1.8-2.6-.3-5.3-1.3-5.3-5.9 0-1.3.5-2.4 1.3-3.3-.2-.3-.6-1.7.1-3.5 0 0 1-.3 3.3 1.3a11.4 11.4 0 0 1 6 0C17 3 18 3.3 18 3.3c.7 1.8.3 3.2.1 3.5.8.9 1.3 2 1.3 3.3 0 4.6-2.8 5.6-5.3 5.9.5.4.9 1.1.9 2.3v3.4c0 .4.2.7.8.6A12 12 0 0 0 12 .5z"/></svg>
-          </a>
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__brand">
+          <router-link to="/" class="footer__logo">
+            <img 
+              src="/src/assets/images/LimpioVital-Logo.png" 
+              alt="Limpi'O' Vital" 
+              class="footer__logo-img"
+              width="150"
+              height="39"
+              loading="lazy"
+            />
+          </router-link>
+          <p class="footer__description">
+            Transformando la limpieza del hogar con soluciones sostenibles y profesionales para Honduras.
+          </p>
+          <div class="footer__social">
+            <a 
+              v-for="social in socialLinks" 
+              :key="social.name"
+              :href="social.url"
+              class="footer__social-link"
+              :aria-label="social.name"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span v-html="social.icon"></span>
+            </a>
+          </div>
         </div>
 
-        <p class="footer__copyright">© <span>{{ year }}</span> Todos los derechos reservados</p>
+        <div v-for="column in footerColumns" :key="column.title" class="footer__column">
+          <h4 class="footer__column-title">{{ column.title }}</h4>
+          <ul class="footer__list">
+            <li v-for="item in column.items" :key="item.label">
+              <a :href="item.url" class="footer__link">{{ item.label }}</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer__bottom">
+        <p class="footer__copyright">
+          © {{ year }} Limpi'O' Vital. Todos los derechos reservados.
+        </p>
+        <div class="footer__legal">
+          <a href="/privacidad" class="footer__legal-link">Privacidad</a>
+          <a href="/terminos" class="footer__legal-link">Términos</a>
+          <a href="/cookies" class="footer__legal-link">Cookies</a>
+        </div>
       </div>
     </div>
   </footer>
@@ -34,110 +57,220 @@
 
 <script setup>
 import { ref } from 'vue'
+
 const year = new Date().getFullYear()
+
+const socialLinks = [
+  { name: 'LinkedIn', icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>' },
+  { name: 'Twitter', icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.6 9 4.5 0 0-.5-3 2-5 2 2 6 2 8 0z"/></svg>' },
+  { name: 'Instagram', icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.4A4 4 0 1 1 12.6 8 4 4 0 0 1 16 11.4z"/><line x1="17.5" y1="6.5" x2="17.5" y2="6.5"/></svg>' }
+]
+
+const footerColumns = [
+  {
+    title: 'Compañía',
+    items: [
+      { label: 'Sobre Nosotros', url: '/sobre-nosotros' },
+      { label: 'Carreras', url: '/carreras' },
+      { label: 'Prensa', url: '/prensa' },
+      { label: 'Blog', url: '/blog' }
+    ]
+  },
+  {
+    title: 'Servicios',
+    items: [
+      { label: 'Plan Básico', url: '/#suscripcion' },
+      { label: 'Plan Plus', url: '/#suscripcion' },
+      { label: 'Plan Premium', url: '/#suscripcion' },
+      { label: 'Plan Empresarial', url: '/#suscripcion' }
+    ]
+  },
+  {
+    title: 'Soporte',
+    items: [
+      { label: 'Centro de Ayuda', url: '/ayuda' },
+      { label: 'Contacto', url: '/contacto' },
+      { label: 'FAQ', url: '/faq' },
+      { label: 'Garantía', url: '/garantia' }
+    ]
+  }
+]
 </script>
 
 <style scoped>
 .footer {
-  background: var(--secondary);
-  color: var(--primary-contrast, #fff);
-  padding: 2.5rem 0;
+  background: var(--surface);
+  border-top: 1px solid var(--border-light);
+  padding: var(--space-xl) 0 var(--space-lg);
+  margin-top: var(--space-xl);
 }
 
-.footer__inner {
+.footer__grid {
   display: grid;
-  grid-template-columns: 1fr auto auto;
-  align-items: center;
-  gap: 1rem;
+  grid-template-columns: 2fr repeat(3, 1fr);
+  gap: var(--space-xl);
+  margin-bottom: var(--space-xl);
 }
 
 .footer__brand {
-  text-align: left;
+  max-width: 350px;
 }
 
-.footer__title {
-  margin: 0 0 0.25rem 0;
-  font-size: 1.125rem;
+.footer__logo {
+  display: inline-block;
+  margin-bottom: var(--space-md);
+  line-height: 0;
 }
 
-.footer__tag {
-  margin: 0;
-  font-size: 0.9rem;
-  color: rgba(255,255,255,0.85);
+.footer__logo-img {
+  width: auto;
+  height: 45px;
+  object-fit: contain;
+  transition: opacity var(--transition-fast);
 }
 
-.footer__links {
-  display: flex;
-  gap: 0.75rem;
+.footer__logo:hover .footer__logo-img {
+  opacity: 0.8;
 }
 
-.footer__link {
-  color: rgba(255,255,255,0.9);
-  text-decoration: none;
-  font-size: 0.9rem;
-  padding: 0.25rem 0.5rem;
-  border-radius: 8px;
-}
-
-.footer__link:hover,
-.footer__link:focus-visible {
-  background: rgba(255,255,255,0.06);
-}
-
-.footer__meta {
-  text-align: right;
+.footer__description {
+  color: var(--text-tertiary);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: var(--space-md);
 }
 
 .footer__social {
-  display: inline-flex;
-  gap: 0.6rem;
-  margin-bottom: 0.4rem;
+  display: flex;
+  gap: var(--space-sm);
 }
 
-.social {
-  display: inline-flex;
+.footer__social-link {
+  display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
-  border-radius: 8px;
-  color: inherit;
-  background: transparent;
-  text-decoration: none;
-  transition: background var(--transition) ease, transform var(--transition) ease;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  background: var(--surface-alt);
+  border: 1px solid var(--border-light);
+  color: var(--text-tertiary);
+  transition: all var(--transition-fast);
 }
 
-.social:hover,
-.social:focus-visible {
-  background: rgba(255,255,255,0.06);
-  transform: translateY(-3px);
+.footer__social-link:hover {
+  color: var(--primary);
+  background: var(--primary-soft);
+  transform: translateY(-2px);
+  border-color: var(--primary);
+}
+
+.footer__column-title {
+  font-size: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-primary);
+  margin-bottom: var(--space-md);
+}
+
+.footer__list {
+  list-style: none;
+}
+
+.footer__link {
+  display: inline-block;
+  color: var(--text-tertiary);
+  font-size: 0.95rem;
+  padding: var(--space-xs) 0;
+  transition: all var(--transition-fast);
+}
+
+.footer__link:hover {
+  color: var(--primary);
+  transform: translateX(4px);
+}
+
+.footer__bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--border-light);
 }
 
 .footer__copyright {
+  color: var(--text-tertiary);
+  font-size: 0.9rem;
   margin: 0;
-  font-size: 0.85rem;
-  color: rgba(255,255,255,0.75);
 }
 
-/* Responsive: stack on small screens */
-@media (max-width: 720px) {
-  .footer__inner {
-    grid-template-columns: 1fr;
+.footer__legal {
+  display: flex;
+  gap: var(--space-md);
+}
+
+.footer__legal-link {
+  color: var(--text-tertiary);
+  font-size: 0.9rem;
+  transition: color var(--transition-fast);
+}
+
+.footer__legal-link:hover {
+  color: var(--primary);
+}
+
+@media (max-width: 1024px) {
+  .footer__grid {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-lg);
+  }
+  
+  .footer__brand {
+    grid-column: 1 / -1;
+    max-width: 100%;
     text-align: center;
   }
-
-  .footer__brand {
-    order: 1;
+  
+  .footer__logo {
+    margin-left: auto;
+    margin-right: auto;
   }
-
-  .footer__links {
-    order: 3;
+  
+  .footer__social {
     justify-content: center;
-  }
-
-  .footer__meta {
-    order: 2;
   }
 }
 
+@media (max-width: 768px) {
+  .footer {
+    padding: var(--space-lg) 0 var(--space-md);
+  }
+  
+  .footer__grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+  }
+  
+  .footer__column {
+    text-align: center;
+  }
+  
+  .footer__bottom {
+    flex-direction: column;
+    gap: var(--space-sm);
+    text-align: center;
+  }
+  
+  .footer__legal {
+    justify-content: center;
+  }
+}
+
+/* Modo oscuro */
+@media (prefers-color-scheme: dark) {
+  .footer__logo-img {
+    filter: brightness(0.9);
+  }
+}
 </style>
