@@ -18,11 +18,11 @@
       </button>
 
       <ul id="primary-navigation" class="nav-links" :aria-hidden="(!menuOpen).toString()">
-        <li><a href="#hero" @click="closeMenu">Inicio</a></li>
-        <li><a href="#propuesta" @click="closeMenu">Propuesta</a></li>
-        <li><a href="#segmentos" @click="closeMenu">Clientes</a></li>
-        <li><a href="#suscripcion" @click="closeMenu">Suscripción</a></li>
-        <li><a href="#impacto" @click="closeMenu">Impacto</a></li>
+        <li><a href="#hero" @click.prevent="navigate('hero')">Inicio</a></li>
+        <li><a href="#propuesta" @click.prevent="navigate('propuesta')">Propuesta</a></li>
+        <li><a href="#segmentos" @click.prevent="navigate('segmentos')">Clientes</a></li>
+        <li><a href="#suscripcion" @click.prevent="navigate('suscripcion')">Suscripción</a></li>
+        <li><a href="#impacto" @click.prevent="navigate('impacto')">Impacto</a></li>
       </ul>
     </div>
   </nav>
@@ -39,6 +39,14 @@ function toggleMenu() {
 
 function closeMenu() {
   menuOpen.value = false
+}
+
+function navigate(sectionId) {
+  const target = document.getElementById(sectionId)
+  if (target) {
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+  closeMenu()
 }
 
 function handleKey(e) {

@@ -113,6 +113,11 @@ h3 { font-size: 1.05rem; }
   padding-inline: 1rem;
 }
 
+.section {
+  margin-block: 3rem;
+  padding-block: 1.4rem;
+}
+
 /* Narrow container used by several sections */
 .container--narrow { max-width: 780px; margin-inline: auto; }
 

@@ -30,6 +30,22 @@
       </div>
     </div>
   </section>
+
+  <section id="propuesta-resumen" class="section" aria-labelledby="propuestaResumenTitle">
+    <div class="container" style="background: var(--surface); padding: 1.5rem; border-radius: 12px;">
+      <h2 id="propuestaResumenTitle">¿Por qué elegirnos y no a otros como Macdel?</h2>
+      <p>Nos tomamos tu hogar en serio: adaptamos el servicio, somos flexibles y cuidamos cada detalle.</p>
+      <ul class="resumen-list">
+        <li><strong>Atención personalizada:</strong> nos adaptamos a tus necesidades, escuchamos y tratamos con calidez.</li>
+        <li><strong>Flexibilidad:</strong> horarios cómodos, cambios de fecha sin problema y opciones según presupuesto.</li>
+        <li><strong>Productos eco-friendly:</strong> biodegradables, seguros para niños y mascotas.</li>
+        <li><strong>Calidad constante:</strong> personal estable, supervisión directa y control de cada visita.</li>
+        <li><strong>Precio-valor superior:</strong> precios justos, más beneficios y ahorro con suscripción.</li>
+        <li><strong>Confianza y seguridad:</strong> personal responsable, respeto absoluto y trato serio.</li>
+      </ul>
+      <p>Otros limpian. Nosotros mejoramos tu calidad de vida.</p>
+    </div>
+  </section>
 </template>
 
 <script setup>
@@ -61,5 +77,15 @@ useReveal(root)
 .icon {
   font-size: 26px;
   margin-bottom: 0.5rem;
+}
+
+.resumen-list {
+  margin: 1rem 0;
+  padding-left: 1.2rem;
+}
+
+.resumen-list li {
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
 }
 </style>
